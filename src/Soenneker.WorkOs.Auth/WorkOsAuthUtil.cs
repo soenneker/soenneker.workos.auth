@@ -133,20 +133,15 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
                 nameof(codeVerifier));
 
         WorkOsOpenApiClient client = await _clientUtil.Get(cancellationToken).NoSync();
-        var grant = new UserlandSessionsControllerAuthenticate0RequestOneOf1
+        var request = new UserlandSessionsControllerAuthenticate0Request
         {
             ClientId = GetClientId(),
             ClientSecret = GetClientSecret(),
             Code = code,
             CodeVerifier = codeVerifier,
-            GrantType = UserlandSessionsControllerAuthenticate0RequestOneOf1_grant_type.AuthorizationCode,
+            GrantType = AuthorizationCodeGrantType.AuthorizationCode,
             IpAddress = NormalizeOptional(context?.IpAddress),
             UserAgent = NormalizeOptional(context?.UserAgent)
-        };
-
-        var request = new UserlandSessionsControllerAuthenticate0Request
-        {
-            UserlandSessionsControllerAuthenticate0RequestOneOf1 = grant
         };
 
         return await client.User_management.Authenticate.PostAsync(request, cancellationToken: cancellationToken)
@@ -160,21 +155,16 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(refreshToken);
         WorkOsOpenApiClient client = await _clientUtil.Get(cancellationToken).NoSync();
-        var grant = new UserlandSessionsControllerAuthenticate0RequestOneOf3
+        var request = new UserlandSessionsControllerAuthenticate0Request
         {
             ClientId = GetClientId(),
             ClientSecret = GetClientSecret(),
             RefreshToken = refreshToken,
             OrganizationId = NormalizeOptional(organizationId),
-            GrantType = UserlandSessionsControllerAuthenticate0RequestOneOf3_grant_type.RefreshToken,
             IpAddress = NormalizeOptional(context?.IpAddress),
             UserAgent = NormalizeOptional(context?.UserAgent)
         };
-
-        var request = new UserlandSessionsControllerAuthenticate0Request
-        {
-            UserlandSessionsControllerAuthenticate0RequestOneOf3 = grant
-        };
+        request.AdditionalData["grant_type"] = "refresh_token";
 
         return await client.User_management.Authenticate.PostAsync(request, cancellationToken: cancellationToken)
                            .NoSync() ??
