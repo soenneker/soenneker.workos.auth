@@ -45,7 +45,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.11" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.11" />
-        <PackageReference Include="Soenneker.WorkOs.OpenApiClientUtil" Version="4.0.167" />
+        <PackageReference Include="Soenneker.WorkOs.OpenApiClientUtil" Version="4.0.168" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
     </ItemGroup>
 </Project>
