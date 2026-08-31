@@ -21,7 +21,6 @@ using Soenneker.WorkOs.OpenApiClientUtil.Abstract;
 
 namespace Soenneker.WorkOs.Auth;
 
-/// <inheritdoc cref="IWorkOsAuthUtil"/>
 public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
 {
     private static readonly JwtSecurityTokenHandler _tokenHandler = new();
@@ -100,25 +99,24 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
         RequireAbsoluteUri(request.RedirectUri, nameof(request.RedirectUri));
         RequireAbsoluteUri(_options.AuthorizeUrl, nameof(_options.AuthorizeUrl));
 
-        var parameters = new Dictionary<string, string?>
-        {
-            ["client_id"] = GetClientId(),
-            ["provider"] = string.IsNullOrWhiteSpace(request.Provider) ? "authkit" : request.Provider,
-            ["redirect_uri"] = request.RedirectUri,
-            ["response_type"] = "code",
-            ["state"] = state,
-            ["code_challenge"] = codeChallenge,
-            ["code_challenge_method"] = "S256"
-        };
-
-        if (!string.IsNullOrWhiteSpace(request.LoginHint))
-            parameters["login_hint"] = request.LoginHint;
+        var parameters = new Dictionary<string, string?>();
 
         foreach ((string key, string? value) in request.AdditionalParameters)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(key);
             parameters[key] = value;
         }
+
+        parameters["client_id"] = GetClientId();
+        parameters["provider"] = string.IsNullOrWhiteSpace(request.Provider) ? "authkit" : request.Provider;
+        parameters["redirect_uri"] = request.RedirectUri;
+        parameters["response_type"] = "code";
+        parameters["state"] = state;
+        parameters["code_challenge"] = codeChallenge;
+        parameters["code_challenge_method"] = "S256";
+
+        if (!string.IsNullOrWhiteSpace(request.LoginHint))
+            parameters["login_hint"] = request.LoginHint;
 
         return QueryHelpers.AddQueryString(_options.AuthorizeUrl, parameters);
     }

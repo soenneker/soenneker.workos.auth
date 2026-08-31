@@ -1,13 +1,15 @@
 [![](https://img.shields.io/nuget/v/soenneker.workos.auth.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.workos.auth/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.workos.auth/publish-package.yml?style=for-the-badge)](https://github.com/soenneker/soenneker.workos.auth/actions/workflows/publish-package.yml)
 [![](https://img.shields.io/nuget/dt/soenneker.workos.auth.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.workos.auth/)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.workos.auth/codeql.yml?style=for-the-badge&label=codeql)](https://github.com/soenneker/soenneker.workos.auth/actions/workflows/codeql.yml)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.WorkOs.Auth
-### Reusable WorkOS AuthKit authorization, PKCE, token exchange, session, and logout utilities
+
+Builds WorkOS AuthKit sign-in flows with random state, S256 PKCE, authorization-code and refresh-token exchange, session revocation, and browser logout URLs.
 
 ## Installation
 
-```
+```bash
 dotnet add package Soenneker.WorkOs.Auth
 ```
 

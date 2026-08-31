@@ -7,7 +7,7 @@ using Soenneker.WorkOs.OpenApiClient.Models;
 namespace Soenneker.WorkOs.Auth.Abstract;
 
 /// <summary>
-/// Provides reusable WorkOS AuthKit authorization, PKCE, token exchange, session, and logout operations.
+/// Provides WorkOS AuthKit authorization URLs, PKCE, token exchange, session revocation, and logout URLs.
 /// </summary>
 public interface IWorkOsAuthUtil
 {

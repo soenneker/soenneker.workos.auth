@@ -8,7 +8,7 @@ using Soenneker.WorkOs.OpenApiClientUtil.Registrars;
 namespace Soenneker.WorkOs.Auth.Registrars;
 
 /// <summary>
-/// A utility for managing authentication/authorization in WorkOS
+/// Registers the WorkOS AuthKit flow service.
 /// </summary>
 public static class WorkOsAuthUtilRegistrar
 {

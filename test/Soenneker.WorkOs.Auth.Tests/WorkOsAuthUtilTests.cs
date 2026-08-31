@@ -50,6 +50,11 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
             LoginHint = "person@example.com"
         };
         request.AdditionalParameters["organization_id"] = "org_123";
+        request.AdditionalParameters["client_id"] = "attacker";
+        request.AdditionalParameters["redirect_uri"] = "https://attacker.example/callback";
+        request.AdditionalParameters["state"] = "attacker";
+        request.AdditionalParameters["code_challenge"] = "attacker";
+        request.AdditionalParameters["code_challenge_method"] = "plain";
 
         WorkOsAuthorizationRedirect redirect = _util.CreateAuthorizationRedirect(request);
         var uri = new System.Uri(redirect.Url);
@@ -62,6 +67,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
         await Assert.That(query["state"].ToString()).IsEqualTo(redirect.State);
         await Assert.That(query["code_challenge"].ToString()).IsEqualTo(redirect.CodeChallenge);
         await Assert.That(query["code_challenge_method"].ToString()).IsEqualTo("S256");
+        await Assert.That(query["response_type"].ToString()).IsEqualTo("code");
         await Assert.That(query["login_hint"].ToString()).IsEqualTo(request.LoginHint);
         await Assert.That(query["organization_id"].ToString()).IsEqualTo("org_123");
     }
