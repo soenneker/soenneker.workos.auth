@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Soenneker.Extensions.Task;
 using Soenneker.Extensions.ValueTask;
+using Soenneker.Hashing.Sha256;
 using Soenneker.WorkOs.Auth.Abstract;
 using Soenneker.WorkOs.Auth.Models;
 using Soenneker.WorkOs.Auth.Options;
@@ -24,6 +25,8 @@ namespace Soenneker.WorkOs.Auth;
 /// <inheritdoc cref="IWorkOsAuthUtil" />
 public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
 {
+    private static readonly Sha256HashingUtil _sha256 = new();
+
     private static readonly JwtSecurityTokenHandler _tokenHandler = new();
 
     private readonly IWorkOsOpenApiClientUtil _clientUtil;
@@ -60,7 +63,7 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
             throw new ArgumentException("The PKCE verifier must contain 43-128 RFC 7636 unreserved characters.",
                 nameof(codeVerifier));
 
-        return Base64UrlEncoder.Encode(SHA256.HashData(Encoding.ASCII.GetBytes(codeVerifier)));
+        return Base64UrlEncoder.Encode(_sha256.Hash(Encoding.ASCII.GetBytes(codeVerifier)));
     }
 
     public bool IsValidPkceValue(string? value)
