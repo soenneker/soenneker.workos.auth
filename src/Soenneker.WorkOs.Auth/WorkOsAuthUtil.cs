@@ -21,6 +21,7 @@ using Soenneker.WorkOs.OpenApiClientUtil.Abstract;
 
 namespace Soenneker.WorkOs.Auth;
 
+/// <inheritdoc cref="IWorkOsAuthUtil" />
 public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
 {
     private static readonly JwtSecurityTokenHandler _tokenHandler = new();
