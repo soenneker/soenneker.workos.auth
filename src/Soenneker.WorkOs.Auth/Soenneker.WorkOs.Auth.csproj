@@ -46,7 +46,7 @@
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.12" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.12" />
         <PackageReference Include="Soenneker.Hashing.Sha256" Version="4.0.3" />
-        <PackageReference Include="Soenneker.WorkOs.OpenApiClientUtil" Version="4.0.194" />
+        <PackageReference Include="Soenneker.WorkOs.OpenApiClientUtil" Version="4.0.195" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
     </ItemGroup>
 </Project>
