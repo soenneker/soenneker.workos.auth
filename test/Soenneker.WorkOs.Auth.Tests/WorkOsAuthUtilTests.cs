@@ -19,7 +19,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async Task Pkce_pair_is_valid_and_matches()
+    public async ValueTask Pkce_pair_is_valid_and_matches()
     {
         WorkOsPkcePair pair = _util.CreatePkcePair();
 
@@ -30,7 +30,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async Task State_is_random_and_url_safe()
+    public async ValueTask State_is_random_and_url_safe()
     {
         string first = _util.CreateState();
         string second = _util.CreateState();
@@ -42,7 +42,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async Task Authorization_redirect_contains_oauth_and_pkce_parameters()
+    public async ValueTask Authorization_redirect_contains_oauth_and_pkce_parameters()
     {
         var request = new WorkOsAuthorizationRequest
         {
@@ -73,7 +73,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async Task Logout_url_contains_session_and_return_url()
+    public async ValueTask Logout_url_contains_session_and_return_url()
     {
         string logoutUrl = _util.BuildLogoutUrl("session_123", "https://example.com/signed-out");
         var uri = new System.Uri(logoutUrl);
@@ -86,7 +86,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async Task Session_id_is_read_from_unvalidated_access_token()
+    public async ValueTask Session_id_is_read_from_unvalidated_access_token()
     {
         var token = new JwtSecurityToken(claims: [new Claim("sid", "session_123"), new Claim("sub", "user_123")]);
         string accessToken = new JwtSecurityTokenHandler().WriteToken(token);
