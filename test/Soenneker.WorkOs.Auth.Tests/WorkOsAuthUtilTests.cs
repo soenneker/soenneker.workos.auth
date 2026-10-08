@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Soenneker.WorkOs.Auth.Abstract;
 using Soenneker.WorkOs.Auth.Models;
 using Soenneker.Tests.HostedUnit;
+using System.Threading;
 
 namespace Soenneker.WorkOs.Auth.Tests;
 
@@ -19,7 +20,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async ValueTask Pkce_pair_is_valid_and_matches()
+    public async ValueTask Pkce_pair_is_valid_and_matches(CancellationToken cancellationToken)
     {
         WorkOsPkcePair pair = _util.CreatePkcePair();
 
@@ -30,7 +31,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async ValueTask State_is_random_and_url_safe()
+    public async ValueTask State_is_random_and_url_safe(CancellationToken cancellationToken)
     {
         string first = _util.CreateState();
         string second = _util.CreateState();
@@ -42,7 +43,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async ValueTask Authorization_redirect_contains_oauth_and_pkce_parameters()
+    public async ValueTask Authorization_redirect_contains_oauth_and_pkce_parameters(CancellationToken cancellationToken)
     {
         var request = new WorkOsAuthorizationRequest
         {
@@ -73,7 +74,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async ValueTask Logout_url_contains_session_and_return_url()
+    public async ValueTask Logout_url_contains_session_and_return_url(CancellationToken cancellationToken)
     {
         string logoutUrl = _util.BuildLogoutUrl("session_123", "https://example.com/signed-out");
         var uri = new System.Uri(logoutUrl);
@@ -86,7 +87,7 @@ public sealed class WorkOsAuthUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async ValueTask Session_id_is_read_from_unvalidated_access_token()
+    public async ValueTask Session_id_is_read_from_unvalidated_access_token(CancellationToken cancellationToken)
     {
         var token = new JwtSecurityToken(claims: [new Claim("sid", "session_123"), new Claim("sub", "user_123")]);
         string accessToken = new JwtSecurityTokenHandler().WriteToken(token);
