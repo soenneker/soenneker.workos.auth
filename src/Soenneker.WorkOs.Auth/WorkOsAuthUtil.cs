@@ -22,7 +22,6 @@ using Soenneker.WorkOs.OpenApiClientUtil.Abstract;
 
 namespace Soenneker.WorkOs.Auth;
 
-/// <inheritdoc cref="IWorkOsAuthUtil" />
 public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
 {
     private static readonly Sha256HashingUtil _sha256 = new();
@@ -137,13 +136,16 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
         WorkOsOpenApiClient client = await _clientUtil.Get(cancellationToken).NoSync();
         var request = new UserlandSessionsControllerAuthenticate0Request
         {
-            ClientId = GetClientId(),
-            ClientSecret = GetClientSecret(),
-            Code = code,
-            CodeVerifier = codeVerifier,
-            GrantType = AuthorizationCodeGrantType.AuthorizationCode,
-            IpAddress = NormalizeOptional(context?.IpAddress),
-            UserAgent = NormalizeOptional(context?.UserAgent)
+            UserlandSessionsControllerAuthenticate0RequestOneOf1 = new UserlandSessionsControllerAuthenticate0RequestOneOf1
+            {
+                ClientId = GetClientId(),
+                ClientSecret = GetClientSecret(),
+                Code = code,
+                CodeVerifier = codeVerifier,
+                GrantType = AuthorizationCodeGrantType.AuthorizationCode,
+                IpAddress = NormalizeOptional(context?.IpAddress),
+                UserAgent = NormalizeOptional(context?.UserAgent)
+            }
         };
 
         return await client.User_management.Authenticate.PostAsync(request, cancellationToken: cancellationToken)
@@ -159,14 +161,17 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
         WorkOsOpenApiClient client = await _clientUtil.Get(cancellationToken).NoSync();
         var request = new UserlandSessionsControllerAuthenticate0Request
         {
-            ClientId = GetClientId(),
-            ClientSecret = GetClientSecret(),
-            RefreshToken = refreshToken,
-            OrganizationId = NormalizeOptional(organizationId),
-            IpAddress = NormalizeOptional(context?.IpAddress),
-            UserAgent = NormalizeOptional(context?.UserAgent)
+            UserlandSessionsControllerAuthenticate0RequestOneOf3 = new UserlandSessionsControllerAuthenticate0RequestOneOf3
+            {
+                ClientId = GetClientId(),
+                ClientSecret = GetClientSecret(),
+                RefreshToken = refreshToken,
+                OrganizationId = NormalizeOptional(organizationId),
+                GrantType = RefreshTokenGrantType.RefreshToken,
+                IpAddress = NormalizeOptional(context?.IpAddress),
+                UserAgent = NormalizeOptional(context?.UserAgent)
+            }
         };
-        request.AdditionalData["grant_type"] = "refresh_token";
 
         return await client.User_management.Authenticate.PostAsync(request, cancellationToken: cancellationToken)
                            .NoSync() ??
