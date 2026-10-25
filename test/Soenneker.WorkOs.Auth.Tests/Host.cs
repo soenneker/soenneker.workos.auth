@@ -25,6 +25,7 @@ public sealed class Host : UnitTestHost
         });
 
         IConfiguration config = TestUtil.BuildConfig();
+        config["WorkOs:ApiKey"] = "test_api_key";
         services.AddSingleton(config);
 
         services.AddWorkOsAuthUtilAsScoped(options =>
