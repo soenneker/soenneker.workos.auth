@@ -134,18 +134,15 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
                 nameof(codeVerifier));
 
         WorkOsOpenApiClient client = await _clientUtil.Get(cancellationToken).NoSync();
-        var request = new UserlandSessionsControllerAuthenticate0Request
+        var request = new UserlandSessionsControllerAuthenticate0RequestOneOf1Variant
         {
-            UserlandSessionsControllerAuthenticate0RequestOneOf1 = new UserlandSessionsControllerAuthenticate0RequestOneOf1
-            {
-                ClientId = GetClientId(),
-                ClientSecret = GetClientSecret(),
-                Code = code,
-                CodeVerifier = codeVerifier,
-                GrantType = AuthorizationCodeGrantType.AuthorizationCode,
-                IpAddress = NormalizeOptional(context?.IpAddress),
-                UserAgent = NormalizeOptional(context?.UserAgent)
-            }
+            ClientId = GetClientId(),
+            ClientSecret = GetClientSecret(),
+            Code = code,
+            CodeVerifier = codeVerifier,
+            GrantType = "authorization_code",
+            IpAddress = NormalizeOptional(context?.IpAddress),
+            UserAgent = NormalizeOptional(context?.UserAgent)
         };
 
         return await client.User_management.Authenticate.PostAsync(request, cancellationToken: cancellationToken)
@@ -159,19 +156,18 @@ public sealed class WorkOsAuthUtil : IWorkOsAuthUtil
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(refreshToken);
         WorkOsOpenApiClient client = await _clientUtil.Get(cancellationToken).NoSync();
-        var request = new UserlandSessionsControllerAuthenticate0Request
+        var request = new UserlandSessionsControllerAuthenticate0RequestOneOf3Variant
         {
-            UserlandSessionsControllerAuthenticate0RequestOneOf3 = new UserlandSessionsControllerAuthenticate0RequestOneOf3
-            {
-                ClientId = GetClientId(),
-                ClientSecret = GetClientSecret(),
-                RefreshToken = refreshToken,
-                OrganizationId = NormalizeOptional(organizationId),
-                GrantType = RefreshTokenGrantType.RefreshToken,
-                IpAddress = NormalizeOptional(context?.IpAddress),
-                UserAgent = NormalizeOptional(context?.UserAgent)
-            }
+            ClientId = GetClientId(),
+            ClientSecret = GetClientSecret(),
+            RefreshToken = refreshToken,
+            GrantType = "refresh_token",
+            IpAddress = NormalizeOptional(context?.IpAddress),
+            UserAgent = NormalizeOptional(context?.UserAgent)
         };
+
+        if (NormalizeOptional(organizationId) is { } normalizedOrganizationId)
+            request.OrganizationId = normalizedOrganizationId;
 
         return await client.User_management.Authenticate.PostAsync(request, cancellationToken: cancellationToken)
                            .NoSync() ??
